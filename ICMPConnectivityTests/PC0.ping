@@ -1,0 +1,26 @@
+C:\>ping 1:30::2
+
+Pinging 1:30::2 with 32 bytes of data:
+Reply from 1:30::2: time=1ms
+Reply from 1:30::2: time=1ms
+Reply from 1:30::2: time=1ms
+Reply from 1:30::2: time=1ms
+
+Ping statistics for 1:30::2:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 1ms, Maximum = 1ms, Average = 1ms
+
+C:\>ping 10.0.30.2
+
+Pinging 10.0.30.2 with 32 bytes of data:
+Reply from 10.0.30.2: bytes=32 time=1ms TTL=121
+Reply from 10.0.30.2: bytes=32 time=1ms TTL=121
+Reply from 10.0.30.2: bytes=32 time=1ms TTL=121
+Reply from 10.0.30.2: bytes=32 time=1ms TTL=121
+
+Ping statistics for 10.0.30.2:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 1ms, Maximum = 1ms, Average = 1ms
+    
