@@ -1,24 +1,39 @@
-# Multiarea OSPF Configuration with IPv4 & IPv6
+# Internal Border Gateway Protocol Configuration with IPv4 & IPv6
 
 ## Contents
 
 1. [**Purpose**](#purpose)
 2. [**Background**](#background)
-3. [**Topology**](#topology)
+     1. [**Border Gateway Protocol**](#border-gateway-protocol)
+     2. [**Other Protocols Used**](#other-protocols-used)
+3. [**Summary**](#summary)
+4. [**Topology**](#topology)
      1. [**IPv4 Topology**](#ipv4-topology)
      2. [**IPv6 Topology**](#ipv6-topology)
-4. [**Address Table**](#address-table)
-5. [**Device Overview**](#device-overview)
-6. [**ICMPv4 Ping Across Network**](#icmpv4-ping-across-network)
-7. [**ICMPv6 Ping Across Network**](#icmpv6-ping-across-network)
-8. [**IPv4 Routing Table**](#ipv4-topology)
-9. [**IPv6 Routing Table**](#ipv6-topology)
+5. [**Address Table**](#address-table)
+6. [**Device Overview**](#device-overview)
+7. [**ICMPv4 Traceroute Across Network**](#icmpv4-traceroute-across-network)
+8. [**ICMPv6 Traceroute Across Network**](#icmpv6-traceroute-across-network)
+9. [**IPv4 Routing Table**](#r1-ipv4-routing-table)
+10. [**IPv6 Routing Table**](#r1-ipv6-routing-table)
 
 ## Purpose
+The purpose of this lab is to use internal Border Gateway Protocol (iBGP) to share routes in and out of an autonomous system (AS) by establishing iBGP neighborships. Students will learn how to use route-reflectors, declare iBGP neighbors, and how to use an interior gateway protocol (IGP) to help BGP packets get navigated between iBGP neighbors. Additionally, students will have to have the knowledge of how to redistribute routes and how to use eBGP to route between AS’s. Students will also brush up on skills needed to setup networks with routing protocols, including advertising interfaces, subnetting, and debugging. 
 
 ## Background
 
 This is section is background info on key concept/parts of the configuration. It is directed an audience that knows some networking, but their knowledge is limited.
+
+### Border Gateway Protocol
+Border Gateway Protocol (BGP) was created in 1989 by Kirk Lougheed, Len Bosack and Yakov Rekhter. eBGP was designed to share routing information between autonomous systems (AS’s), which are often owned by different organizations. iBGP is like a different flavor of eBGP; iBGP, instead of routing between AS’s, provides routes within an AS. This means that iBGP neighbors will have the same AS number. Different from eBGP, iBGP often needs to have an Interior Gateway Protocol (IGP) to help route the packets needed to establish iBGP neighborships. This is because if there are multiple routes to an iBGP neighbor as long as one route is valid to the interface that is used to set up the neighbor session the iBGP neighbor will stay up. As of now BGP has been updated since 2006 and supports both IPv6 and IPv4 neighbors.
+
+### Other Protocols Used
+
+Refer [here](https://github.com/101zh/eBGPLab/tree/main?tab=readme-ov-file#background) for background on other protocols
+
+## Summary
+In this lab 3 AS’s were setup with eBGP connecting the 3 AS’s together. There are two host devices that are PCs and there are seven 4321 routers that are connected via ethernet. To allow host devices to communicate with each other, the routers needed IPv6 and IPv4 routes to redistribute in and out of eBGP. Additionally in the 2nd AS, iBGP is used to provide network connectivity between AS 1 and AS 3 with EIGRP serving as the routing protocol for the 2nd AS. This lab doesn’t demonstrate the ability to manually influence the path eBGP supplies to the routers or how eBGP selects a path from multiple paths because there is only one route to any particular destination in the topology for this lab.\
+In the topology, R7—the router in the middle of the 2nd AS—acts as a route-reflector to neighbors: R3 and R4. This allows R7 to receive routes from R3 and R4, so that connectivity can be established between the 2 AS’s. It is important to note that there is a separate way that you could configure the routes. You could configure R3 & R4 as route reflectors and R7 as the route-reflector-client; then establishing R3 and R4 as neighbors would also allow for connectivity. 
 
 ## Topology
 
@@ -57,11 +72,44 @@ Additionally, the PCs can have any IP that is within the subnet of the link that
 
 This Topology Consists of...
 
-- Six 4321 routers running Cisco IOS XE Software, Version 16.9 Universal K9
+- Seven 4321 routers running Cisco IOS XE Software, Version 16.9 Universal K9
 
-## ICMPv4 Ping Across Network
+## ICMPv4 Traceroute Across Network
+```
+C:\>tracert 10.0.30.2
 
-## ICMPv6 Ping Across Network
+Tracing route to DESKTOP-66QHS53 [10.0.30.2]
+over a maximum of 30 hops:
+
+  1    <1 ms    <1 ms    <1 ms  10.0.20.1
+  2    <1 ms    <1 ms    <1 ms  10.0.0.2
+  3    <1 ms    <1 ms    <1 ms  192.168.0.2
+  4     1 ms    <1 ms    <1 ms  10.0.1.2
+  5    <1 ms    <1 ms    <1 ms  10.0.2.2
+  6     1 ms    <1 ms    <1 ms  192.168.1.2
+  7     1 ms     1 ms     1 ms  10.0.3.2
+  8     2 ms     1 ms     1 ms  DESKTOP-66QHS53 [10.0.30.2]
+
+Trace complete.
+```
+
+## ICMPv6 Traceroute Across Network
+```
+C:\>tracert 1:30::2
+
+Tracing route to 1:30::2 over a maximum of 30 hops
+
+  1    <1 ms    <1 ms    <1 ms  1:20::1
+  2     1 ms    <1 ms    <1 ms  1::2
+  3     1 ms    <1 ms    <1 ms  2::2
+  4     1 ms     1 ms    <1 ms  1:1::2
+  5     1 ms    <1 ms    <1 ms  1:2::2
+  6     2 ms     1 ms    <1 ms  2:1::2
+  7     1 ms     1 ms     1 ms  1:3::2
+  8     1 ms     1 ms     1 ms  1:30::2
+
+Trace complete.
+```
 
 ## R1 IPv4 Routing Table
 ```
