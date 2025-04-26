@@ -16,6 +16,7 @@
 8. [**ICMPv6 Traceroute Across Network**](#icmpv6-traceroute-across-network)
 9. [**IPv4 Routing Table**](#r1-ipv4-routing-table)
 10. [**IPv6 Routing Table**](#r1-ipv6-routing-table)
+11. [**Copyright**](#copyright)
 
 ## Purpose
 The purpose of this lab is to use internal Border Gateway Protocol (iBGP) to share routes in and out of an autonomous system (AS) by establishing iBGP neighborships. Students will learn how to use route-reflectors, declare iBGP neighbors, and how to use an interior gateway protocol (IGP) to help BGP packets get navigated between iBGP neighbors. Additionally, students will have to have the knowledge of how to redistribute routes and how to use eBGP to route between AS’s. Students will also brush up on skills needed to setup networks with routing protocols, including advertising interfaces, subnetting, and debugging. 
@@ -179,3 +180,20 @@ OE2 100:4::4/128 [110/10]
 L   FF00::/8 [0/0]
      via Null0, receive
 ```
+
+## Copyright
+
+Copyright (C) 2025  101zh
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
