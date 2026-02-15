@@ -1,50 +1,44 @@
 # Internal Border Gateway Protocol Configuration with IPv4 & IPv6
 
+A lab which configures a computer network with internal border gateway protocol. Device configurations and other diagnostic information can be found in the corresponding folders.
+
+Background information on lab concepts can be found here: <https://101zh.github.io/networking/>
+
 ## Contents
 
-1. [**Purpose**](#purpose)
-2. [**Background**](#background)
-     1. [**Border Gateway Protocol**](#border-gateway-protocol)
-     2. [**Other Protocols Used**](#other-protocols-used)
-3. [**Summary**](#summary)
-4. [**Topology**](#topology)
-     1. [**IPv4 Topology**](#ipv4-topology)
-     2. [**IPv6 Topology**](#ipv6-topology)
-5. [**Address Table**](#address-table)
-6. [**Device Overview**](#device-overview)
-7. [**ICMPv4 Traceroute Across Network**](#icmpv4-traceroute-across-network)
-8. [**ICMPv6 Traceroute Across Network**](#icmpv6-traceroute-across-network)
-9. [**IPv4 Routing Table**](#r1-ipv4-routing-table)
-10. [**IPv6 Routing Table**](#r1-ipv6-routing-table)
+- [**Purpose**](#purpose)
+- [**Lab Summary**](#lab-summary)
+- [**Topology**](#topology)
+  - [**IPv4 Topology**](#ipv4-topology)
+  - [**IPv6 Topology**](#ipv6-topology)
+- [**Address Table**](#address-table)
+- [**Device Overview**](#device-overview)
+- [**ICMPv4 Traceroute Across Network**](#icmpv4-traceroute-across-network)
+- [**ICMPv6 Traceroute Across Network**](#icmpv6-traceroute-across-network)
+- [**R1 IPv4 Routing Table**](#r1-ipv4-routing-table)
+- [**R1 IPv6 Routing Table**](#r1-ipv6-routing-table)
+- [**Copyright**](#copyright)
 
 ## Purpose
-The purpose of this lab is to use internal Border Gateway Protocol (iBGP) to share routes in and out of an autonomous system (AS) by establishing iBGP neighborships. Students will learn how to use route-reflectors, declare iBGP neighbors, and how to use an interior gateway protocol (IGP) to help BGP packets get navigated between iBGP neighbors. Additionally, students will have to have the knowledge of how to redistribute routes and how to use eBGP to route between AS’s. Students will also brush up on skills needed to setup networks with routing protocols, including advertising interfaces, subnetting, and debugging. 
 
-## Background
+The purpose of this lab is to use Internal Border Gateway Protocol (iBGP) to share routes in and out of an autonomous system (AS) by establishing iBGP neighborships. Additionally, eBGP will be used to share route information between the other two AS’s. As a part of this lab, knowledge about using route-reflectors, declaring iBGP neighbors, and using an interior gateway protocol (IGP) to help BGP packets get navigated between iBGP neighbors will be integral to setting up iBGP. For eBGP, skills about how to redistribute routes and how to use eBGP to route between AS’s will be important for this lab.
 
-This is section is background info on key concept/parts of the configuration. It is directed an audience that knows some networking, but their knowledge is limited.
+## Lab Summary
 
-### Border Gateway Protocol
-Border Gateway Protocol (BGP) was created in 1989 by Kirk Lougheed, Len Bosack and Yakov Rekhter. eBGP was designed to share routing information between autonomous systems (AS’s), which are often owned by different organizations. iBGP is like a different flavor of eBGP; iBGP, instead of routing between AS’s, provides routes within an AS. This means that iBGP neighbors will have the same AS number. Different from eBGP, iBGP often needs to have an Interior Gateway Protocol (IGP) to help route the packets needed to establish iBGP neighborships. This is because if there are multiple routes to an iBGP neighbor as long as one route is valid to the interface that is used to set up the neighbor session the iBGP neighbor will stay up. As of now BGP has been updated since 2006 and supports both IPv6 and IPv4 neighbors.
+In this lab 3 AS’s were set up with eBGP connecting the 3 AS’s together. There are two host devices that are PCs and there are seven 4321 routers that are connected via ethernet. To allow host devices to communicate with each other, the routers needed IPv6 and IPv4 routes to redistribute in and out of eBGP. Additionally in the 2nd AS, iBGP is used to provide network connectivity between AS 1 and AS 3 with EIGRP serving as the routing protocol for the 2nd AS.
 
-### Other Protocols Used
-
-Refer [here](https://github.com/101zh/eBGPLab/tree/main?tab=readme-ov-file#background) for background on other protocols
-
-## Summary
-In this lab 3 AS’s were setup with eBGP connecting the 3 AS’s together. There are two host devices that are PCs and there are seven 4321 routers that are connected via ethernet. To allow host devices to communicate with each other, the routers needed IPv6 and IPv4 routes to redistribute in and out of eBGP. Additionally in the 2nd AS, iBGP is used to provide network connectivity between AS 1 and AS 3 with EIGRP serving as the routing protocol for the 2nd AS. This lab doesn’t demonstrate the ability to manually influence the path eBGP supplies to the routers or how eBGP selects a path from multiple paths because there is only one route to any particular destination in the topology for this lab.\
-In the topology, R7—the router in the middle of the 2nd AS—acts as a route-reflector to neighbors: R3 and R4. This allows R7 to receive routes from R3 and R4, so that connectivity can be established between the 2 AS’s. It is important to note that there is a separate way that you could configure the routes. You could configure R3 & R4 as route reflectors and R7 as the route-reflector-client; then establishing R3 and R4 as neighbors would also allow for connectivity. 
+In the topology, R7—the router in the middle of the 2nd AS—acts as a route-reflector to neighbors: R3 and R4. This allows R7 to receive routes from R3 and R4, so that connectivity can be established between the 2 AS’s. And when R7 receives routes, it will send updates to R3 and R4, which will provide end-to-end connectivity for the PCs.
 
 ## Topology
 
 These are the topologies for both IPv4 and IPv6, each link is labeled with the network number and subnet mask of the link. Then each interface is labeled with the 4th octet of the usable IP address within the subnet of that link.\
 Additionally, the PCs can have any IP that is within the subnet of the link that they are on. **DHCP is not setup**.
 
-### <center>IPv4 Topology</center>
+### IPv4 Topology
 
 ![IPv4 Topology Image](Images/IPv4.Topology.png)
 
-### <center>IPv6 Topology</center>
+### IPv6 Topology
 
 ![IPv4 Topology Image](Images/IPv6.Topology.png)
 
@@ -67,7 +61,6 @@ Additionally, the PCs can have any IP that is within the subnet of the link that
 | R7          | G0/0/0    | 1:1::2/64    | 10.0.1.2     | 255.255.255.0 |
 | R7          | G0/0/1    | 1:2::1/64    | 10.0.2.1     | 255.255.255.0 |
 
-
 ## Device Overview
 
 This Topology Consists of...
@@ -75,7 +68,8 @@ This Topology Consists of...
 - Seven 4321 routers running Cisco IOS XE Software, Version 16.9 Universal K9
 
 ## ICMPv4 Traceroute Across Network
-```
+
+```cmd
 C:\>tracert 10.0.30.2
 
 Tracing route to DESKTOP-66QHS53 [10.0.30.2]
@@ -94,7 +88,8 @@ Trace complete.
 ```
 
 ## ICMPv6 Traceroute Across Network
-```
+
+```cmd
 C:\>tracert 1:30::2
 
 Tracing route to 1:30::2 over a maximum of 30 hops
@@ -112,7 +107,8 @@ Trace complete.
 ```
 
 ## R1 IPv4 Routing Table
-```
+
+```text
 Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
        D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
        N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
@@ -144,7 +140,8 @@ O E2  192.168.1.0/24 [110/10] via 10.0.0.2, 01:12:41, GigabitEthernet0/0/1
 ```
 
 ## R1 IPv6 Routing Table
-```
+
+```text
 IPv6 Routing Table - default - 13 entries
 Codes: C - Connected, L - Local, S - Static, U - Per-user Static route
        B - BGP, R - RIP, I1 - ISIS L1, I2 - ISIS L2
@@ -179,3 +176,27 @@ OE2 100:4::4/128 [110/10]
 L   FF00::/8 [0/0]
      via Null0, receive
 ```
+
+## Copyright
+
+MIT License
+
+Copyright (c) 2026 101zh
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
