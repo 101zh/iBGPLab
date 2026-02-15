@@ -1,0 +1,49 @@
+
+  Interface associated: (none) (peering address NOT in same link)
+  Transport(tcp) path-mtu-discovery is enabled
+  Graceful-Restart is disabled
+  SSO is disabled
+Connection state is ESTAB, I/O status: 1, unread input bytes: 0
+Connection is ECN Disabled, Mininum incoming TTL 0, Outgoing TTL 255
+Local host: 100:7::7, Local port: 34259
+Foreign host: 100:4::4, Foreign port: 179
+Connection tableid (VRF): 0
+Maximum output segment queue size: 50
+
+Enqueued packets for retransmit: 0, input: 0  mis-ordered: 0 (0 bytes)
+
+Event Timers (current time is 0x5B4B9E):
+Timer          Starts    Wakeups            Next
+Retrans            72          0             0x0
+TimeWait            0          0             0x0
+AckHold            70         63             0x0
+SendWnd             0          0             0x0
+KeepAlive           0          0             0x0
+GiveUp              0          0             0x0
+PmtuAger         2765       2764        0x5B4CE7
+DeadWait            0          0             0x0
+Linger              0          0             0x0
+ProcessQ            0          0             0x0
+
+iss: 4031829957  snduna: 4031832295  sndnxt: 4031832295
+irs:   49478049  rcvnxt:   49480939
+
+sndwnd:  15491  scale:      0  maxrcvwnd:  16384
+rcvwnd:  14949  scale:      0  delrcvwnd:   1435
+
+SRTT: 1000 ms, RTTO: 1003 ms, RTV: 3 ms, KRTT: 0 ms
+minRTT: 1 ms, maxRTT: 1000 ms, ACK hold: 200 ms
+uptime: 3586515 ms, Sent idletime: 8373 ms, Receive idletime: 8172 ms
+Status Flags: active open
+Option Flags: nagle, path mtu capable
+IP Precedence value : 6
+
+Datagrams (max data segment is 1440 bytes):
+Rcvd: 141 (out of order: 0), with data: 71, total data bytes: 2889
+Sent: 141 (retransmit: 0, fastretransmit: 0, partialack: 0, Second Congestion: 0), with data: 141, total data bytes: 7985
+
+ Packets received in fast path: 0, fast processed: 0, slow path: 0
+ fast lock acquisition failures: 0, slow path: 0
+TCP Semaphore      0x7F5637183888  FREE
+
+% NOTE: This command is deprecated. Please use 'show bgp ipv6 unicast'
